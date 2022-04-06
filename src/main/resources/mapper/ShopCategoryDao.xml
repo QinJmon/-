@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mooc.dao.ShopCategoryDao">
+
+    <!--首页由以及类别组成，店铺存在在二级类别下面，店铺所属的shopCategory的parent_id不为空-->
+    <select id="queryShopCategory" resultType="com.mooc.entity.ShopCategory">
+        select * from tb_shop_category
+        <where>
+            <if test="shopCategoryCondition==null">
+                and parent_id is  null
+            </if>
+            <if test="shopCategoryCondition!=null">
+                and parent_id is not null
+            </if>
+            <if test="shopCategoryCondition!=null and shopCategoryCondition.parent!=null">
+                and parent_id=#{shopCategoryCondition.parent.shopCategoryId}
+            </if>
+        </where>
+        order by
+        priority desc
+    </select>
+</mapper>
